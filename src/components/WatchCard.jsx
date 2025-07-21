@@ -12,7 +12,7 @@ const WatchCard = ({ watch }) => {
 
   return (
     <motion.div
-      className={`border rounded-lg shadow hover:shadow-md p-4 transition-colors duration-500 ${
+      className={`border rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300 p-4 ${
         darkMode ? 'bg-zinc-900 text-white' : 'bg-white text-black'
       }`}
       whileHover={{ scale: 1.05 }}
@@ -24,7 +24,7 @@ const WatchCard = ({ watch }) => {
         <img
           src={image}
           alt={title.rendered}
-          className="w-full h-48 object-contain mb-4"
+          className="w-full h-48 object-contain mb-4 rounded-md"
         />
         <h3 className="font-semibold text-lg mb-2">{title.rendered}</h3>
       </Link>

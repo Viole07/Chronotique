@@ -25,7 +25,7 @@ const WatchDetail = () => {
 
   return (
     <motion.div
-      className={`p-6 max-w-3xl mx-auto transition-colors duration-500 ${
+      className={`p-6 pt-20 max-w-3xl mx-auto transition-colors duration-500 ${
         darkMode ? 'bg-black text-white' : 'bg-white text-black'
       }`}
       initial={{ opacity: 0, y: 30 }}

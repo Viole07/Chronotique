@@ -8,6 +8,7 @@ const Home = () => {
   const { darkMode, setDarkMode } = useContext(ThemeContext);
   const [watches, setWatches] = useState([]);
   const [category, setCategory] = useState('All');
+  const [searchTerm, setSearchTerm] = useState(''); // State for search term
 
   useEffect(() => {
     axios
@@ -16,36 +17,45 @@ const Home = () => {
       .catch((err) => console.error('Error fetching watches:', err));
   }, []);
 
-  const filteredWatches =
-    category === 'All'
-      ? watches
-      : watches.filter((w) => w.acf.category === category);
+  // Filter watches based on search term and category
+  const filteredWatches = watches.filter((watch) => {
+    const title = watch.title.rendered.toLowerCase();
+    const brand = watch.acf.brand.toLowerCase();
+    const categoryMatch = category === 'All' || watch.acf.category === category;
+    
+    return (
+      (title.includes(searchTerm.toLowerCase()) || brand.includes(searchTerm.toLowerCase())) && categoryMatch
+    );
+  });
 
   return (
     <motion.div
-      className={`p-6 min-h-screen transition-colors duration-500 ${
+      className={`p-6 pt-20 min-h-screen transition-colors duration-500 ${
         darkMode ? 'bg-black text-white' : 'bg-white text-black'
       }`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Watch Collection</h1>
-        <button
-          onClick={() => setDarkMode(!darkMode)}
-          className="bg-gray-800 text-white dark:bg-white dark:text-black px-4 py-2 rounded transition-colors duration-300"
-        >
-          {darkMode ? '☀ Light Mode' : '🌙 Dark Mode'}
-        </button>
+
+      {/* Search Bar */}
+      <div className="mb-4">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search by name, brand..."
+          className={"bg-#FFFFFF dark:bg-#000000  text-#000000 w-full sm:w-1/2 border border-gray-300  dark:text-#FFFFFF px-3 py-2 rounded shadow-sm transition"}
+        />
       </div>
 
+      {/* Category Filter */}
       <label className="block mb-4">
         <span className="text-lg font-medium mr-2">Filter by Category:</span>
         <motion.select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="border px-3 py-1 rounded shadow-sm dark:bg-gray-700 dark:text-white transition-colors duration-300"
+          className={`bg-#FFFFFF dark:bg-#000000  text-#000000 border px-3 py-2 rounded shadow-sm  dark:text-#FFFFFF dark:border-gray-600 transition-colors duration-300`}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -56,17 +66,22 @@ const Home = () => {
         </motion.select>
       </label>
 
+      {/* Watch Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredWatches.map((watch, i) => (
-          <motion.div
-            key={watch.id}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-          >
-            <WatchCard watch={watch} />
-          </motion.div>
-        ))}
+        {filteredWatches.length > 0 ? (
+          filteredWatches.map((watch, i) => (
+            <motion.div
+              key={watch.id}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+            >
+              {watch ? <WatchCard watch={watch} /> : null}
+            </motion.div>
+          ))
+        ) : (
+          <p>No watches available</p>
+        )}
       </div>
     </motion.div>
   );

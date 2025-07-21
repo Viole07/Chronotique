@@ -1,7 +1,9 @@
 @import "tailwindcss";
-
+:root {
+  color-scheme: light dark;
+}
 html {
-  transition: background-color 0.5s ease, color 0.5s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 body {
   @apply transition-colors duration-500;

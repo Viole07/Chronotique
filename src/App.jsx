@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import WatchDetail from './pages/WatchDetail';
 import { ThemeContext } from './context/ThemeContext';
 import Navbar from './components/Navbar';
+import Cart from './pages/Cart'; // ✅ Add this line
 
 const AppWrapper = () => {
   const { darkMode } = useContext(ThemeContext);
@@ -16,6 +17,7 @@ const AppWrapper = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/watch/:id" element={<WatchDetail />} />
+          <Route path="/cart" element={<Cart />} /> {/* ✅ Add this route */}
         </Routes>
       </Router>
     </div>

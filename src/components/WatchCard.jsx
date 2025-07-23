@@ -2,8 +2,10 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ThemeContext } from '../context/ThemeContext';
+import { useCart } from '../context/CartContext';
 
 const WatchCard = ({ watch }) => {
+  const { addToCart } = useCart();
   const { darkMode } = useContext(ThemeContext);
   const { id, title, acf, _embedded } = watch;
 
@@ -31,6 +33,12 @@ const WatchCard = ({ watch }) => {
       <p><strong>Brand:</strong> {acf.brand}</p>
       <p><strong>Category:</strong> {acf.category}</p>
       <p><strong>Price:</strong> ₹{acf.price}</p>
+      <button
+  onClick={() => addToCart(watch)}
+  className="mt-2 bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition"
+>
+  Add to Cart
+</button>
       <p><strong>Rating:</strong> ⭐ {acf.rating}</p>
     </motion.div>
   );
